@@ -1,0 +1,33 @@
+.auth-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    gap: 20px;
+}
+.auth-wrapper form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border: 2px solid var(--primary);
+    padding: 50px;
+    border-radius: 20px;
+}
+
+.auth-wrapper form button{
+    background-color: var(--primary);
+    color: white;
+    font-weight: 600;
+}
+
+.auth-wrapper form button:hover{
+    background-color: var(--primary);
+    color: white;
+    font-weight: 600;
+}
+.auth-wrapper form a{
+    color: var(--primary) !important;
+    font-weight: 800 !important;
+    text-decoration: none;
+}
