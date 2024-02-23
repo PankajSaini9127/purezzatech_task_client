@@ -7,14 +7,15 @@ import "../../assets/css/auth.css";
 import image from "../../assets/images/SamarthEV.webp";
 
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../services/api";
 
-function Auth() {
+function Auth({setAlert}) {
 
   const [formData,setFormData] = useState({showPassword:false,email:"",password:""});
   const [formError,setFormError] = useState(null);
-
+  
+  const navigate = useNavigate();
   function handleChange(e){
    console.log(e.target.name)
     setFormData({
@@ -54,10 +55,13 @@ function Auth() {
       e.preventDefault();
       if(validate(formData)){
         delete formData.showPassword;
-        console.log(formData)
            const result = await login(formData);
            if(result.status === 200){
+            setAlert({open:true,success:true,msg:result.message});
             setFormData({email:"",password:"",showPassword:false});
+            navigate("/home");
+           }else{
+            setAlert({open:true,success:false,msg:result.message});
            }
       }else{
         console.log("validation Error")

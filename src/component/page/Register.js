@@ -6,6 +6,7 @@ import {
   Typography,
   InputAdornment,
   IconButton,
+  Snackbar,
 } from "@mui/material";
 import React, { useState } from "react";
 
@@ -15,7 +16,7 @@ import "../../assets/css/auth.css";
 import image from "../../assets/images/SamarthEV.webp";
 
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RegisterAPI } from "../../services/api";
 
 let initialData = {
@@ -27,10 +28,12 @@ let initialData = {
   cpassword: "",
 };
 
-function Register() {
+function Register({setAlert}) {
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState(initialData);
   const [formError, setFormError] = useState(null);
+
 
   function handleTogglePasswordVisibility(password) {
     if (password) {
@@ -46,7 +49,7 @@ function Register() {
   function handleChange(e) {
     setFormError({
       ...formError,
-      [e.target.name]:"",
+      [e.target.name]: "",
     });
     setFormData({
       ...formData,
@@ -87,7 +90,11 @@ function Register() {
 
         const result = await RegisterAPI(formData);
         if (result.status === 200) {
+          setAlert({open:true,success:true,msg:result.message});
           setFormData(initialData);
+            navigate("/auth");
+        }else{
+          setAlert({open:true,success:false,msg:result.message});
         }
       } else {
         console.log("validation Error");
@@ -97,8 +104,11 @@ function Register() {
     }
   }
 
+
+
   return (
     <Box className="auth-wrapper">
+     
       <Box component={"img"} src={image} alt="logo" />
       <Box component={"form"} onSubmit={handleSubmit}>
         <FormControl>
@@ -111,7 +121,9 @@ function Register() {
             onChange={handleChange}
             value={formData.name}
           />
-          {formError?.name&& <Typography color="red">{formError.name}</Typography>} 
+          {formError?.name && (
+            <Typography color="red">{formError.name}</Typography>
+          )}
         </FormControl>
         <FormControl>
           <TextField
@@ -123,7 +135,9 @@ function Register() {
             onChange={handleChange}
             value={formData.email}
           />
-          {formError?.email&& <Typography color="red">{formError.email}</Typography>} 
+          {formError?.email && (
+            <Typography color="red">{formError.email}</Typography>
+          )}
         </FormControl>
         <FormControl>
           <TextField
@@ -138,7 +152,7 @@ function Register() {
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
-                    onClick={()=>handleTogglePasswordVisibility(true)}
+                    onClick={() => handleTogglePasswordVisibility(true)}
                     edge="end"
                   >
                     {formData.showPassword ? <VisibilityOff /> : <Visibility />}
@@ -147,7 +161,9 @@ function Register() {
               ),
             }}
           />
-          {formError?.password&& <Typography color="red">{formError.password}</Typography>} 
+          {formError?.password && (
+            <Typography color="red">{formError.password}</Typography>
+          )}
         </FormControl>
         <FormControl>
           <TextField
@@ -162,7 +178,7 @@ function Register() {
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
-                    onClick={()=>handleTogglePasswordVisibility(false)}
+                    onClick={() => handleTogglePasswordVisibility(false)}
                     edge="end"
                   >
                     {formData.showConfirmPassword ? (
@@ -175,7 +191,9 @@ function Register() {
               ),
             }}
           />
-          {formError?.cpassword&& <Typography color="red">{formError.cpassword}</Typography>} 
+          {formError?.cpassword && (
+            <Typography color="red">{formError.cpassword}</Typography>
+          )}
         </FormControl>
 
         <Button type="submit">Sign Up</Button>

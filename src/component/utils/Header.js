@@ -104,7 +104,7 @@ function ResponsiveAppBar() {
               </Button>
             ))}
 
-<Button
+              <Button
                 onClick={()=>{handleCloseNavMenu();navigate("/auth")}}
                 sx={{ my: 2, display: "block" }}
                 className="list-menu"
